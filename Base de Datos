@@ -1,0 +1,162 @@
+CREATE DATABASE `Parcial BD`;
+
+USE `Parcial BD`;
+
+CREATE TABLE `Categoria` (
+	`Cod_Categoria` INT NOT NULL,
+	`Categoria` VARCHAR(50) NOT NULL DEFAULT '',
+	PRIMARY KEY (`Cod_Categoria`)
+);
+
+CREATE TABLE `Agencia` (
+	`Cod_Agencia` INT NOT NULL,
+	`Nombre` VARCHAR(50) NOT NULL DEFAULT '',
+	`Direccion` VARCHAR(50) NOT NULL DEFAULT '',
+	`Ciudad` VARCHAR(50) NOT NULL DEFAULT '',
+	`Provincia` VARCHAR(50) NOT NULL DEFAULT '',
+	`Pais` VARCHAR(50) NOT NULL DEFAULT '',
+	PRIMARY KEY (`Cod_Agencia`)
+);
+
+CREATE TABLE `Empleado` (
+	`Cod_Empleado` INT NOT NULL,
+	`Nombre` VARCHAR(50) NOT NULL DEFAULT '',
+	`Apellido` VARCHAR(50) NOT NULL DEFAULT '',
+	`Direccion` VARCHAR(50) NOT NULL DEFAULT '',
+	`Fecha_Nac` DATE NOT NULL,
+	`Edad` INT NOT NULL,
+	`Ciudad` VARCHAR(50) NOT NULL,
+	`Provincia` VARCHAR(50) NOT NULL,
+	PRIMARY KEY (`Cod_Empleado`)
+);
+
+CREATE TABLE `Compania` (
+	`Cod_Compania` INT NOT NULL,
+	`Nombre` VARCHAR(50) NOT NULL DEFAULT '',
+	`Direccion` VARCHAR(50) NOT NULL DEFAULT '',
+	`Ciudad` VARCHAR(50) NOT NULL DEFAULT '',
+	`Provincia` VARCHAR(50) NOT NULL DEFAULT '',
+	`Pais` VARCHAR(50) NOT NULL DEFAULT '',
+	PRIMARY KEY (`Cod_Compania`)
+);
+
+CREATE TABLE `Cliente` (
+	`Cod_Cliente` INT NOT NULL,
+	`Nombre` VARCHAR(50) NOT NULL DEFAULT '',
+	`Apellido` VARCHAR(50) NOT NULL DEFAULT '',
+	`Direccion` VARCHAR(50) NOT NULL DEFAULT '',
+	`Fecha_Nac` DATE NOT NULL,
+	`Edad` INT NOT NULL,
+	`Sexo` VARCHAR(50) NOT NULL DEFAULT '',
+	`Ciudad` VARCHAR(50) NOT NULL DEFAULT '',
+	`Provincia` VARCHAR(50) NOT NULL DEFAULT '',
+	`Pais` VARCHAR(50) NOT NULL DEFAULT '',
+	PRIMARY KEY (`Cod_Cliente`)
+);
+
+CREATE TABLE `Alquiler` (
+	`Cod_Alquiler` INT NOT NULL,
+	`Cod_Cliente` INT NOT NULL,
+	`Cod_Compania` INT NOT NULL,
+	`Cod_Empleado` INT NOT NULL,
+	`Fecha_Alquiler` DATE NOT NULL,
+	`Comentarios` VARCHAR(50) NOT NULL DEFAULT '',
+	PRIMARY KEY (`Cod_Alquiler`),
+	CONSTRAINT `FK_alquiler_cliente` FOREIGN KEY (`Cod_Cliente`) REFERENCES `cliente` (`Cod_Cliente`),
+	CONSTRAINT `FK_alquiler_compania` FOREIGN KEY (`Cod_Compania`) REFERENCES `compania` (`Cod_Compania`),
+	CONSTRAINT `FK_alquiler_empleado` FOREIGN KEY (`Cod_Empleado`) REFERENCES `empleado` (`Cod_Empleado`)
+);
+
+CREATE TABLE `Transporte` (
+	`Cod_Transporte` INT NOT NULL,
+	`Cod_Categoria` INT NOT NULL,
+	`Cod_Agencia` INT NOT NULL,
+	`Transporte` VARCHAR(50) NOT NULL DEFAULT '',
+	`Marca` VARCHAR(50) NOT NULL DEFAULT '',
+	`PU` INT NOT NULL DEFAULT 0,
+	PRIMARY KEY (`Cod_Transporte`),
+	CONSTRAINT `FK_transporte_categoria` FOREIGN KEY (`Cod_Categoria`) REFERENCES `categoria` (`Cod_Categoria`),
+	CONSTRAINT `FK_transporte_agencia` FOREIGN KEY (`Cod_Agencia`) REFERENCES `agencia` (`Cod_Agencia`)
+);
+
+CREATE TABLE `Alquiler_Detalle` (
+	`Cod_Detalle` INT NOT NULL,
+	`Cod_Alquiler` INT NOT NULL,
+	`Cod_Transporte` INT NOT NULL,
+	`Cantidad` INT NOT NULL,
+	PRIMARY KEY (`Cod_Detalle`),
+	CONSTRAINT `FK_alquiler_detalle_transporte` FOREIGN KEY (`Cod_Transporte`) REFERENCES `transporte` (`Cod_Transporte`),
+	CONSTRAINT `FK_alquiler_detalle_alquiler` FOREIGN KEY (`Cod_Alquiler`) REFERENCES `alquiler` (`Cod_Alquiler`)
+);
+
+CREATE TABLE `Documento` (
+	`Cod_Documento` INT NOT NULL,
+	`Cod_Cliente` INT NOT NULL,
+	`Tipo` VARCHAR(50) NOT NULL DEFAULT '',
+	`Numero` INT NOT NULL DEFAULT 0,
+	PRIMARY KEY (`Cod_Documento`),
+	CONSTRAINT `FK_documento_cliente` FOREIGN KEY (`Cod_Cliente`) REFERENCES `cliente` (`Cod_Cliente`)
+);
+
+/*CATEGORIAS*/
+INSERT INTO `parcial bd`.`categoria` (`Cod_Categoria`, `Categoria`) VALUES ('1', 'Sedan 4 puertas');
+INSERT INTO `parcial bd`.`categoria` (`Cod_Categoria`, `Categoria`) VALUES ('2', 'Camion');
+INSERT INTO `parcial bd`.`categoria` (`Cod_Categoria`, `Categoria`) VALUES ('3', '5000 toneladas');
+INSERT INTO `parcial bd`.`categoria` (`Cod_Categoria`, `Categoria`) VALUES ('4', 'Sedan 5 puertas');
+INSERT INTO `parcial bd`.`categoria` (`Cod_Categoria`, `Categoria`) VALUES ('5', 'Minivan 6 puertas');
+
+/*EMPLEADOS*/
+INSERT INTO `parcial bd`.`empleado` (`Cod_Empleado`, `Nombre`, `Apellido`, `Direccion`, `Fecha_Nac`, `Edad`, `Ciudad`, `Provincia`) VALUES ('1', 'Gabriel', 'Sosa', 'Larrazabal 123', '1975-11-09', '45', 'Arredondo', 'San Juan');
+INSERT INTO `parcial bd`.`empleado` (`Cod_Empleado`, `Nombre`, `Apellido`, `Direccion`, `Fecha_Nac`, `Edad`, `Ciudad`, `Provincia`) VALUES ('2', 'Jose', 'Gomez', 'Florencio Sanchez 1223', '1965-11-09', '55', 'San Justo', 'Mendoza');
+INSERT INTO `parcial bd`.`empleado` (`Cod_Empleado`, `Nombre`, `Apellido`, `Direccion`, `Fecha_Nac`, `Edad`, `Ciudad`, `Provincia`) VALUES ('3', 'Jorge', 'Pardo', 'Navarro 5123', '1985-11-09', '35', 'Castelar', 'Buenos Aires');
+INSERT INTO `parcial bd`.`empleado` (`Cod_Empleado`, `Nombre`, `Apellido`, `Direccion`, `Fecha_Nac`, `Edad`, `Ciudad`, `Provincia`) VALUES ('4', 'Martin', 'Gonzalez', 'Alem 885', '1995-11-09', '25', 'Rawson', 'Chubut');
+INSERT INTO `parcial bd`.`empleado` (`Cod_Empleado`, `Nombre`, `Apellido`, `Direccion`, `Fecha_Nac`, `Edad`, `Ciudad`, `Provincia`) VALUES ('5', 'Hernan', 'Laurenzana', 'Italia 2123', '1980-11-09', '40', 'Arredondo', 'San Juan');
+
+/*AGENCIA*/
+INSERT INTO `parcial bd`.`agencia` (`Cod_Agencia`, `Nombre`, `Direccion`, `Ciudad`, `Provincia`, `Pais`) VALUES ('1', 'Olivieri', 'Juan acosta 1255', 'San isidro', 'Buenos aires', 'Argentina');
+INSERT INTO `parcial bd`.`agencia` (`Cod_Agencia`, `Nombre`, `Direccion`, `Ciudad`, `Provincia`, `Pais`) VALUES ('2', 'LNG', 'Juan enrique 1355', 'San pedro', 'Buenos aires', 'Argentina');
+INSERT INTO `parcial bd`.`agencia` (`Cod_Agencia`, `Nombre`, `Direccion`, `Ciudad`, `Provincia`, `Pais`) VALUES ('3', 'Juanitos', 'Jose hernandez 5255', 'Cordoba capital', 'Cordoba', 'Argentina');
+INSERT INTO `parcial bd`.`agencia` (`Cod_Agencia`, `Nombre`, `Direccion`, `Ciudad`, `Provincia`, `Pais`) VALUES ('4', 'El malambo', 'Sergio Lopez 155', 'General alvear', 'Mendoza', 'Argentina');
+
+/*TRANSPORTE*/
+INSERT INTO `parcial bd`.`transporte` (`Cod_Transporte`, `Cod_Categoria`, `Cod_Agencia`, `Transporte`, `Marca`, `PU`) VALUES ('1', '2', '1', 'Camion', 'Mercedez Benz', '20000');
+INSERT INTO `parcial bd`.`transporte` (`Cod_Transporte`, `Cod_Categoria`, `Cod_Agencia`, `Transporte`, `Marca`, `PU`) VALUES ('2', '3', '2', 'Auto', 'Ford', '10000');
+INSERT INTO `parcial bd`.`transporte` (`Cod_Transporte`, `Cod_Categoria`, `Cod_Agencia`, `Transporte`, `Marca`, `PU`) VALUES ('3', '4', '3', 'Camioneta', 'Fiat', '15000');
+INSERT INTO `parcial bd`.`transporte` (`Cod_Transporte`, `Cod_Categoria`, `Cod_Agencia`, `Transporte`, `Marca`, `PU`) VALUES ('4', '5', '4', 'Trafic', 'Renault', '7000');
+INSERT INTO `parcial bd`.`transporte` (`Cod_Transporte`, `Cod_Categoria`, `Cod_Agencia`, `Transporte`, `Marca`, `PU`) VALUES ('5', '1', '1', 'Auto', 'Ford', '12000');
+
+/*CLIENTES*/
+INSERT INTO `parcial bd`.`cliente` (`Cod_Cliente`, `Nombre`, `Apellido`, `Direccion`, `Fecha_Nac`, `Edad`, `Sexo`, `Ciudad`, `Provincia`, `Pais`) VALUES ('1', 'Alexis', 'Barros', 'Olavarria 1234', '1997-10-11', '23', 'm', 'Flores', 'Buenos Aires', 'Argentina');
+INSERT INTO `parcial bd`.`cliente` (`Cod_Cliente`, `Nombre`, `Apellido`, `Direccion`, `Fecha_Nac`, `Edad`, `Sexo`, `Ciudad`, `Provincia`, `Pais`) VALUES ('2', 'Camila', 'Sosa', 'Padre arrieta 228', '1998-10-11', '22', 'f', 'Cordoba', 'Cordoba', 'Argentina');
+INSERT INTO `parcial bd`.`cliente` (`Cod_Cliente`, `Nombre`, `Apellido`, `Direccion`, `Fecha_Nac`, `Edad`, `Sexo`, `Ciudad`, `Provincia`, `Pais`) VALUES ('3', 'Federico', 'Alegre', 'Larralde 1254', '1973-10-11', '47', 'm', 'Rawson', 'Chubut', 'Argentina');
+INSERT INTO `parcial bd`.`cliente` (`Cod_Cliente`, `Nombre`, `Apellido`, `Direccion`, `Fecha_Nac`, `Edad`, `Sexo`, `Ciudad`, `Provincia`, `Pais`) VALUES ('4', 'Agustina', 'Martinez', 'Lobos 1234', '1980-10-11', '40', 'f', 'Ciudadela', 'Buenos Aires', 'Argentina');
+
+/*COMPANIA*/
+INSERT INTO `parcial bd`.`compania` (`Cod_Compania`, `Nombre`, `Direccion`, `Ciudad`, `Provincia`, `Pais`) VALUES ('1', 'HERTZ', 'Larralde 1222', 'Castelar', 'Buenos Aires', 'Argentina');
+INSERT INTO `parcial bd`.`compania` (`Cod_Compania`, `Nombre`, `Direccion`, `Ciudad`, `Provincia`, `Pais`) VALUES ('2', 'NATURAL', 'Echandia 1252', 'CABA', 'Buenos Aires', 'Argentina');
+INSERT INTO `parcial bd`.`compania` (`Cod_Compania`, `Nombre`, `Direccion`, `Ciudad`, `Provincia`, `Pais`) VALUES ('3', 'SPORT', 'Ibanez 1282', 'Olivos', 'Buenos Aires', 'Argentina');
+
+/*ALQUILER*/
+INSERT INTO `parcial bd`.`alquiler` (`Cod_Alquiler`, `Cod_Cliente`, `Cod_Compania`, `Cod_Empleado`, `Fecha_Alquiler`, `Comentarios`) VALUES ('1', '1', '1', '1', '2002-11-11', 'Ninguno');
+INSERT INTO `parcial bd`.`alquiler` (`Cod_Alquiler`, `Cod_Cliente`, `Cod_Compania`, `Cod_Empleado`, `Fecha_Alquiler`, `Comentarios`) VALUES ('2', '2', '2', '2', '2008-11-11', 'Ninguno');
+INSERT INTO `parcial bd`.`alquiler` (`Cod_Alquiler`, `Cod_Cliente`, `Cod_Compania`, `Cod_Empleado`, `Fecha_Alquiler`, `Comentarios`) VALUES ('3', '3', '3', '3', '2004-11-11', 'Ninguno');
+INSERT INTO `parcial bd`.`alquiler` (`Cod_Alquiler`, `Cod_Cliente`, `Cod_Compania`, `Cod_Empleado`, `Fecha_Alquiler`, `Comentarios`) VALUES ('4', '4', '3', '4', '1997-11-11', 'Ninguno');
+INSERT INTO `parcial bd`.`alquiler` (`Cod_Alquiler`, `Cod_Cliente`, `Cod_Compania`, `Cod_Empleado`, `Fecha_Alquiler`, `Comentarios`) VALUES ('5', '4', '3', '5', '2015-11-11', 'Ninguno');
+
+/*ALQUILER DETALLE*/
+INSERT INTO `parcial bd`.`alquiler_detalle` (`Cod_Detalle`, `Cod_Alquiler`, `Cod_Transporte`, `Cantidad`) VALUES ('1', '2', '3', '2');
+INSERT INTO `parcial bd`.`alquiler_detalle` (`Cod_Detalle`, `Cod_Alquiler`, `Cod_Transporte`, `Cantidad`) VALUES ('2', '3', '4', '3');
+INSERT INTO `parcial bd`.`alquiler_detalle` (`Cod_Detalle`, `Cod_Alquiler`, `Cod_Transporte`, `Cantidad`) VALUES ('3', '4', '5', '4');
+INSERT INTO `parcial bd`.`alquiler_detalle` (`Cod_Detalle`, `Cod_Alquiler`, `Cod_Transporte`, `Cantidad`) VALUES ('4', '5', '1', '1');
+INSERT INTO `parcial bd`.`alquiler_detalle` (`Cod_Detalle`, `Cod_Alquiler`, `Cod_Transporte`, `Cantidad`) VALUES ('5', '1', '2', '5');
+
+/*DOCUMENTO*/
+INSERT INTO `parcial bd`.`documento` (`Cod_Documento`, `Cod_Cliente`, `Tipo`, `Numero`) VALUES ('1', '1', 'DNI', '20589687');
+INSERT INTO `parcial bd`.`documento` (`Cod_Documento`, `Cod_Cliente`, `Tipo`, `Numero`) VALUES ('2', '2', 'DNI', '29589656');
+INSERT INTO `parcial bd`.`documento` (`Cod_Documento`, `Cod_Cliente`, `Tipo`, `Numero`) VALUES ('3', '3', 'DNI', '40589649');
+INSERT INTO `parcial bd`.`documento` (`Cod_Documento`, `Cod_Cliente`, `Tipo`, `Numero`) VALUES ('4', '4', 'DNI', '18589622');
+
+
+
+
+
