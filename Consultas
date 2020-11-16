@@ -1,0 +1,54 @@
+/*1*/
+SELECT alquiler.Fecha_Alquiler, compania.Nombre AS "Nombre Compania", agencia.Nombre AS "Nombre Agencia", alquiler_detalle.Cod_Alquiler, transporte.Transporte
+FROM alquiler, compania, agencia, alquiler_detalle, transporte
+WHERE alquiler.Cod_Compania = compania.Cod_Compania
+	AND alquiler.Cod_Alquiler = alquiler_detalle.Cod_Alquiler
+	AND transporte.Cod_Transporte = alquiler_detalle.Cod_Transporte
+	AND agencia.Cod_Agencia = transporte.Cod_Agencia
+	AND compania.Nombre = "HERTZ"
+	AND agencia.Nombre = "LNG"
+	AND alquiler.Fecha_Alquiler BETWEEN '1999-01-01' AND '2013-01-01'
+	ORDER BY alquiler.Fecha_Alquiler ASC 
+;
+
+/*2*/
+SELECT AVG(cliente.Edad) AS "Edad Promedio"
+FROM cliente,alquiler,alquiler_detalle, transporte, categoria, empleado
+WHERE cliente.Cod_Cliente = alquiler.Cod_Cliente
+	AND alquiler.Cod_Alquiler = alquiler_detalle.Cod_Alquiler
+	AND alquiler_detalle.Cod_Transporte = transporte.Cod_Transporte
+	AND categoria.Cod_Categoria = transporte.Cod_Categoria
+	AND empleado.Cod_Empleado = alquiler.Cod_Empleado
+	AND categoria.Categoria = "Sedan 4 puertas"
+	AND empleado.Provincia = "San Juan" OR empleado.Provincia = "Mendoza"
+;
+
+/*3*/
+SELECT COUNT(cliente.Cod_Cliente) AS "Numero Clientes"
+FROM cliente, alquiler, alquiler_detalle, transporte, agencia, categoria
+WHERE cliente.Cod_Cliente = alquiler.Cod_Cliente
+	AND alquiler.Cod_Alquiler = alquiler_detalle.Cod_Alquiler
+	AND alquiler_detalle.Cod_Transporte = transporte.Cod_Transporte
+	AND transporte.Cod_Agencia = agencia.Cod_Agencia
+	AND transporte.Cod_Categoria = categoria.Cod_Categoria
+	AND agencia.Nombre = "Olivieri"
+	AND transporte.Transporte = "Camion"
+	AND categoria.Categoria = "5000 toneladas"
+;
+
+/*4*/
+SELECT empleado.Nombre, empleado.Apellido
+FROM empleado, compania, alquiler, cliente, documento
+WHERE empleado.Cod_Empleado = alquiler.Cod_Empleado
+	AND alquiler.Cod_Compania = compania.Cod_Compania
+	AND alquiler.Cod_Cliente = cliente.Cod_Cliente
+	AND cliente.Cod_Cliente = documento.Cod_Cliente
+	AND documento.Numero > 28000000
+	AND cliente.Provincia = "Chubut"
+	ORDER BY empleado.Edad DESC
+	LIMIT 3
+;
+
+
+
+
